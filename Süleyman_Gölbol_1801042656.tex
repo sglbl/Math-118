@@ -1,0 +1,197 @@
+\documentclass[a4 paper]{article}
+\usepackage[inner=2.0cm,outer=2.0cm,top=2.5cm,bottom=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage[ruled]{algorithm2e}
+\usepackage[rgb]{xcolor}
+\usepackage{verbatim}
+\usepackage{subcaption}
+\usepackage{amsgen,amsmath,amstext,amsbsy,amsopn,tikz,amssymb,tkz-linknodes}
+\usepackage{fancyhdr}
+\usepackage[colorlinks=true, urlcolor=blue,  linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage{rotating}
+\usepackage{booktabs}
+\newcommand{\ra}[1]{\renewcommand{\arraystretch}{#1}}
+
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{rem}[thm]{Remark}
+\numberwithin{equation}{section}
+
+\newcommand{\homework}[6]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf MATH 118:~Statistics and Probability \hfill {\small (#2)}} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\Large \hfill #1  \hfill} }
+       \vspace{6mm}
+       \hbox to 6.28in { {\it Instructor: {\rm #3} \hfill Name: {\rm #5} \hfill Student Id: {\rm #6}} \hfill}
+       \hbox to 6.28in { {\it Assistant: #4  \hfill #6}}
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{#5 -- #1}{#5 -- #1}
+   \vspace*{4mm}
+}
+
+\newcommand{\problem}[2]{~\\\fbox{\textbf{Problem #1}}\hfill (#2 points)\newline\newline}
+\newcommand{\subproblem}[1]{~\newline\textbf{(#1)}}
+\newcommand{\D}{\mathcal{D}}
+\newcommand{\Hy}{\mathcal{H}}
+\newcommand{\VS}{\textrm{VS}}
+\newcommand{\solution}{~\newline\textbf{\textit{(Solution)}} }
+
+\newcommand{\bbF}{\mathbb{F}}
+\newcommand{\bbX}{\mathbb{X}}
+\newcommand{\bI}{\mathbf{I}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\bY}{\mathbf{Y}}
+\newcommand{\bepsilon}{\boldsymbol{\epsilon}}
+\newcommand{\balpha}{\boldsymbol{\alpha}}
+\newcommand{\bbeta}{\boldsymbol{\beta}}
+\newcommand{\0}{\mathbf{0}}
+
+
+\begin{document}
+\homework{Homework \#1}{Due: 26/04/21}{Dr. Zafeirakis Zafeirakopoulos}{Gizem S\"ung\"u}{}{}
+\textbf{Course Policy}: Read all the instructions below carefully before you start working on the assignment, and before you make a submission.
+\begin{itemize}
+\item It is not a group homework. Do not share your answers to anyone in any circumstance. Any cheating means at least -100 for both sides. 
+\item Do not take any information from the Internet.
+\item No late homework will be accepted. 
+\item For any questions about the homework, come to my office hour.
+\item After the office hour, no questions about the homework by email will be responded.
+\item Submit your homework (both your latex and pdf files in a zip file) into the course page of Moodle.
+\item Save your latex, pdf and zip files as "Name\_Surname\_StudentId".\{tex, pdf, zip\}.
+\item The deadline of the homework is 22/04/21 23:55.
+\end{itemize}
+
+\problem{1}{100}
+
+Homework 1 considers a Covid-19 dataset which is published on \href{https://github.com/owid/covid-19-data/tree/master/public/data}{Github}. Please download any document type that you prefer of the dataset from the links which are shown in Figure \ref{fig:pic}.
+\begin{figure}[htb]
+	
+	\includegraphics[scale=0.5]{pic.png}
+	\caption{The complete dataset links}
+	\label{fig:pic}
+\end{figure}
+The dataset is updated daily and includes data on confirmed cases, deaths, hospitalizations, testing, and vaccinations as well as other variables of potential interest. The data set has the following basic columns:
+\begin{itemize}
+	\item iso\_code: Short name of the country
+	\item continent: The continent where the country exists
+	\item location: The country name
+	\item date: The date when the data about various variables are taken. 
+\end{itemize}
+
+You are responsible to implement a program which reads the given dataset from the file and computes the data for the following questions. Any programming language that you prefer will be accepted. Putting comments on your functions that you implement is must. Each question must be appended to a file which is called "output\{.csv, .txt\}". The file contains the first 18 questions listed below. The 18th question will be written in this document.
+
+\begin{itemize}
+	\item[1. ] How many countries the dataset has?
+	\item[2. ] When is the earliest date data are taken for a country? Which country is it?
+	\item[3. ] How many cases are confirmed for each country so far? Print pairwise results of country and total cases.
+	\item[4. ] How many deaths are confirmed for each country so far? Print pairwise results of country and total deaths.
+	\item[5. ] What are the average, minimum, maximum and variation values of the reproduction rates for each country?
+	\begin{table}[ht]
+		\caption{The format of the output for the questions 5, 6, 7, 8, 9, 10, 12, 13.} % title of Table
+		\centering  % used for centering table
+		\begin{tabular}{c c c c c}% centered columns (4 columns)
+			\hline\hline       %inserts double horizontal lines
+			Country & minimum & maximum & average & variation \\ 
+			[0.5ex]% inserts table 
+			%heading
+			\hline      % inserts single horizontal line
+			value & value & value & value & value \\% inserting body of the table
+			
+			\hline %inserts single line
+		\end{tabular}\label{table:nonlin}% is used to refer this table in the text
+	\end{table}
+	\item[6. ] What are the average, minimum, maximum and variation values of the icu\_patients (intensive care unit patients) for each country?
+	\item[7. ] What are the average, minimum, maximum and variation values of the hosp\_patients (hospital patients) for each country?
+	\item[8. ] What are the average, minimum, maximum and variation values of the weekly icu (intensive care unit) admissions for each country?
+	\item[9. ] What are the average, minimum, maximum and variation values of the weekly hospital admissions for each country?
+	\item[10. ] What are the average, minimum, maximum and variation values of new tests per day for each country?
+	\item[11. ] How many tests are conducted in total for each country so far?
+	\item[12. ] What are the average, minimum, maximum and variation values of the positive rates of the tests for each country?
+	\item[13. ] What are the average, minimum, maximum and variation values of the tests per case for each country?
+	\item[14. ] How many people are vaccinated by at least one dose in each country?
+	\item[15. ] How many people are vaccinated fully in each country?
+	\item[16. ] How many vaccinations are administered in each country so far?
+	\item[17. ] List information about population, median age, \# of people aged 65 older, \# of people aged 70 older, economic performance, death rates due to heart disease, diabetes prevalence, \# of female smokers, \# of	male smokers, 	handwashing facilities,	hospital beds per thousand people,	life expectancy and	human development index.
+		\begin{table}[ht]
+		\caption{The format of the output for the question 17} % title of Table
+		\centering  % used for centering table
+		\begin{tabular}{c c c c}% centered columns (4 columns)
+			\hline\hline       %inserts double horizontal lines
+			Country & population & median age & \# of people aged 65 older \\ 
+			[0.5ex]% inserts table 
+			%heading
+			\hline      % inserts single horizontal line
+			value & value & value & value \\% inserting body of the table
+			
+			\hline %inserts single line
+		\end{tabular}\label{table:nonlin}% is used to refer this table in the text
+	\end{table}
+	\item[18. ] Summarize all the results that you obtain by the first 17 questions (except question 2). 
+	\begin{table}[ht]
+		\caption{The format of the output for the question 18} % title of Table
+		\centering  % used for centering table
+		\begin{tabular}{c c c c c c c}% centered columns (4 columns)
+			\hline\hline       %inserts double horizontal lines
+			Country & q\#3 & q\#4 & q\#5\_min &  q\#5\_max & q\#5\_avg &  q\#5\_var  \\ 
+			[0.5ex]% inserts table 
+			%heading
+			\hline      % inserts single horizontal line
+			 value & value & value & value & value & value & value\\% inserting body of the table
+
+			\hline %inserts single line
+		\end{tabular}\label{table:nonlin}% is used to refer this table in the text
+	\end{table}
+	\item[19. ] Comment the results based on your observations. Write your opinions about the reasons of increasing infection rates by giving examples from the results. Feel free to explain any situation that you observe. More observations more opportunities will bring you for the second homework. 
+	\solution (Write your observations here.)
+	\newpage 
+	Solution: \\ \\
+	- Hypothesis : Even some countries's new cases or deaths become 0 sometime, new cases always come up again .\\
+- How did you obtain the hypothesis: I checked many successful countries like Israel and New Zealand, sometimes there aren't new cases for days/weeks but then new Corona virus cases always come up. 
+\newline \\
+- Hypothesis : If vaccinated people are not the most of the population, new cases are not shrinking that much. \\
+- How did you obtain the hypothesis: I checked some countries like Vietnam and Taiwan, I thought when vaccinations begin, new cases will be reduce but new cases increases. And when I check population, vaccinated people are not most of the population.
+\newline \\
+- Hypothesis : In the countries that vaccinated people are many of the population, deaths are decreasing.\\
+- How did you obtain the hypothesis: I checked some countries like Israel that many of the population were vaccianted, and after months there were no deaths.
+\newline \\
+- Hypothesis : Death rates are less in countries that aged 65 or 70 older are small part of country.\\
+- How did you obtain the hypothesis: I checked countries that has big population (Vietnam 96 million and Taiwan 23 million) and small percent of aged 65/70 older people and I saw that new deaths are almost 0 and new cases are not big even before of the vaccination.
+\newline \\
+- Hypothesis : New cases are less in countries that aged 70 older are small part of country.\\
+- How did you obtain the hypothesis: Like hyphotesis before, Vietnam and Taiwan's aged 70 older population are less that \% 10. And when the death rates are small, the cases are small too. 
+\newline \\
+- Hypothesis : Most of the non-old people survive from corona without any test etc.\\
+- How did you obtain the hypothesis: If aged 70 older are small part of country, death rates are small but at the same time new cases are small too even that country has big population. Also, when we divide total deaths to total coronavirus cases, we can see that, aged people's population in country are not changing death rates. 
+So there is a ratio between death/case. Most of the countries' rate are between \%1.5 and \%3.5.(There are some exceptions like Turkey). For example 2 countries like United Kingdom (aged 70 older is \%12.53) and Iran(aged 70 older is \%3.18) and even the difference between age ratio that much, death/case are both around $\sim$2.9\%.
+\newline \\
+- Hypothesis : Diabetes prevalence and cases/death rate are irrelevant.\\
+- How did you obtain the hypothesis: I took 2 countries like United States of America(\%10 diabetes prevalence) and Benin(\%0.99 prevalance) that has big difference. And when I checked the death rates I saw that rates are really close like \%1.3 $\sim$ \%1.8.
+\newline\\
+- Hypothesis : The countries that smoking is high, the death rates are more. \\
+- How did you obtain the hypothesis: There are 2 countries Cuba and Greece that has close population(10 million and 11 million) and Cuba's male and female smokers average is \%35 and for Greece, it is more than \%43. So I checked the death numbers and Cuba was 569 but Greece was sadly 9864. So I think smoking has really bad effects for coronavirus.
+\newline\\
+- Hypothesis : The countries that don't wash their hands most and the countries that wash their hands corona virus death rate difference is irrelevant. \\
+- How did you obtain the hypothesis: There are 2 countries called Bosnia and Herzegovina and Zimbabwe. In Zimbabwe handwashing facilities are 36.79 and in Bosnia and Herzegovina it is 97.16. But the death rates(corona cases / corona deaths ) is $\sim$ \%4.2 for Bosna and Herzegovina, and $\sim$\%4.1 for Zimbabwe.
+\newline\\
+	
+	
+\end{itemize}
+
+
+\end{document} 
+
+
