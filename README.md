@@ -5,4 +5,4 @@
 Data Analysis of Covid-19 Data
 
 ### [Homework 2](https://github.com/sglbl/Math-118/tree/main/HW2)
-Poisson Distribution Using Python
+Poisson Distribution Using Java & Python
